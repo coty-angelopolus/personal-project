@@ -2,18 +2,22 @@ import java.util.Scanner;
 
 public class CurrencyConverter {
     public static void main() {
-        System.out.println("Welcome to the Currency Converter\n");
+        System.out.println("\nWelcome to the Currency Converter\n");
         System.out.println("1 - USD (United States Dollar)\n2 - EUR (Euro)");
         System.out.println("3 - JPY (Japanese Yen)\n4 - GBP (British Pound Sterling\n5 - AUD (Australian Dollar)");
         System.out.println("6 - CAD (Canadian Dollar)\n7 - CHF (Swiss Franc)\n8 - NZD (New Zealand Dollar)");
         System.out.println("Type the currency you have, followed by a space, and then type the currency you wanted to converted into");
+
         Scanner scanner = new Scanner(System.in);
         String curr = scanner.nextLine();
-        String [] temp1 = curr.split(" ");
+        String[] temp1 = curr.split(" ");
         int curr1 = Integer.parseInt(temp1[0]);
         int curr2 = Integer.parseInt(temp1[1]);
         System.out.print("enter amount of money: ");
         int moneyVal = Integer.parseInt(scanner.nextLine());
+        currconn(curr1, curr2, moneyVal);
+    }
+        public static void currconn(int curr1, int curr2, int moneyVal){
 
         if (curr1 == 1){
             if (curr2 == 1){

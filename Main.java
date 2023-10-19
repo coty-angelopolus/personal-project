@@ -1,7 +1,8 @@
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
 
         System.out.println("Hello you fucking shminga binga");
         System.out.println("today I will be guiding you on the resources you need adn to specific calculations");
@@ -9,19 +10,30 @@ public class Main {
         System.out.println("This was created on 10/16");
         System.out.println("\n");
         boolean bigshmiga = true;
+
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your name: ");
         String userName = scanner.nextLine();
+        System.out.println("Welcome "+userName);
         System.out.print("Enter in your location (2-letter state abbreviation): ");
         String userLoc = scanner.nextLine();
         System.out.println("\n");
         System.out.println("what would you like to do today?");
         while (bigshmiga == true) {
-            System.out.println("1 - Currency Converter\n2 - Tax Calculator\n3 - Tic Tac Toe game");
+            System.out.println("\n1 - Currency Converter\n2 - Tax Calculator\n3 - Tic Tac Toe game");
             System.out.println("4 - Snake game\n5 - Word Doc File Saver\n6 - ATM Simulation\n7 - Document Analyzer");
             System.out.println("8 - Exit\n");
             System.out.print("Selection > ");
-            int userSel = Integer.parseInt(scanner.nextLine());
+
+            String SelTemp = scanner.nextLine();
+            int userSel = 0;
+
+            try {
+                userSel = Integer.parseInt(SelTemp);
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Invalid input. Please enter a valid integer.");
+            }
+
             if (userSel == 1) {
                 CurrencyConverter.main();
             }

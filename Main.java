@@ -1,8 +1,8 @@
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
 
         System.out.println("Hello you fucking shminga binga");
         System.out.println("today I will be guiding you on the resources you need adn to specific calculations");
@@ -14,15 +14,19 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your name: ");
         String userName = scanner.nextLine();
+        if (userName.equals("amie") || userName.equals("Amie")){
+            System.out.println("yoooooooo shammiiiieeeeeeeeeee is using my programmmmmmmmmmmmmmmmmmmmmmmm");
+        }
         System.out.println("Welcome "+userName);
         System.out.print("Enter in your location (2-letter state abbreviation): ");
         String userLoc = scanner.nextLine();
         System.out.println("\n");
         System.out.println("what would you like to do today?");
-        while (bigshmiga == true) {
+        System.out.println("So far these are complete: 1, 2, 3, 5, 6, 7");
+        while (bigshmiga) {
             System.out.println("\n1 - Currency Converter\n2 - Tax Calculator\n3 - Tic Tac Toe game");
-            System.out.println("4 - Snake game\n5 - Word Doc File Saver\n6 - ATM Simulation\n7 - Document Analyzer");
-            System.out.println("8 - Exit\n");
+            System.out.println("4 - Snake game\n5 - Encryption center\n6 - ATM Simulation\n7 - Document Analyzer");
+            System.out.println("8 - Bet against the Computer\n9 - Exit");
             System.out.print("Selection > ");
 
             String SelTemp = scanner.nextLine();
@@ -43,11 +47,12 @@ public class Main {
             if (userSel == 3) {
                 TicTacToe.main();
             }
+
             if (userSel == 4) {
                 SnakeGame.main();
             }
             if (userSel == 5) {
-                DocSaver.main();
+                EncryptionCenter.main();
             }
             if (userSel == 6) {
                 AtmSim.main();
@@ -56,6 +61,11 @@ public class Main {
                 DocAnalyzer.main();
             }
             if (userSel == 8){
+                BetSystem.main();
+            }
+            if (userSel == 9){
+                System.out.println("Thank you for using my program!");
+                System.out.println("Closing................");
                 bigshmiga = false;
             }
         }

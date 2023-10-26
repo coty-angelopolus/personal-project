@@ -33,6 +33,8 @@ public class TicTacToe {
 
         frame.add(mainPanel);
         frame.setUndecorated(true);
+        frame.toFront();
+        frame.setAlwaysOnTop(true);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

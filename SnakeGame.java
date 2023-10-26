@@ -1,6 +1,5 @@
-public class SnakeGame {
-    public static void main() {
+public class SnakeGame{
+    public static void main(){
 
-        System.out.println("SnakeGame");
     }
 }

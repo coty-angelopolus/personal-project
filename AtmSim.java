@@ -77,13 +77,26 @@ public class AtmSim {
                             System.out.println("Do you want to see your balance in different currencies?");
                             System.out.println("Y - Yes\nN - No");
                             String Tempdecide = scanner.nextLine();
-                            if (!Tempdecide.equals("N")){
+                            if (Tempdecide.equals("Y")){
                                 System.out.println("What currency would you like to convert into?");
                                 System.out.println("1 - USD (United States Dollar)\n2 - EUR (Euro)");
                                 System.out.println("3 - JPY (Japanese Yen)\n4 - GBP (British Pound Sterling\n5 - AUD (Australian Dollar)");
                                 System.out.println("6 - CAD (Canadian Dollar)\n7 - CHF (Swiss Franc)\n8 - NZD (New Zealand Dollar)");
                                 int temp = Integer.parseInt(scanner.nextLine());
                                 CurrencyConverter.currconn(1,temp,Tuservalue);
+                            }
+                            System.out.println("Would you like to deposit or withdraw?");
+                            System.out.println("1 - Deposit\n2 - Withdraw");
+                            System.out.print("> ");
+                            int userdec1 = Integer.parseInt(scanner.nextLine());
+                            if (userdec1 == 1){
+                                System.out.println("How much are you depositing?");
+                                System.out.print("> ");
+                                int useramount = Integer.parseInt(scanner.nextLine());
+                                int newUserBal = Tuservalue + useramount;
+                                System.out.println("New account value: "+(newUserBal));
+                                AtmInfoChange(userFind,newUserBal);
+
                             }
                             }
                         }
@@ -93,4 +106,34 @@ public class AtmSim {
             }
         }
         }
-    }
+        public static void AtmInfoChange(String targetString, int NewUserBal) {
+
+            String newContent = String.valueOf(NewUserBal);
+
+            // Input file
+            File inputFile = new File("ATMsim.txt");
+
+            try (RandomAccessFile file = new RandomAccessFile(inputFile, "rw")) {
+                String line;
+                long targetPosition;
+
+                while ((line = file.readLine()) != null) {
+
+                    if (line.equals(targetString)) {
+                        file.readLine();
+                        targetPosition = file.getFilePointer();
+                        file.seek(targetPosition);
+                        file.writeBytes(newContent);
+                        break;
+                    }
+
+                }
+            } catch (IOException ignored) {
+
+            }
+
+            System.out.println("File updated successfully.");
+        }
+
+}
+

@@ -1,15 +1,14 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class BetSystem {
     static String userName;static String userPass;static int userTotal;static String faceValue;static String numValue;static int BJValue;static int UserTotalBJV;static int DealerTotalBJV;
     static String userFind;static int randomNumber2;static int randomNumber3;static int randomNumber;static int randomNumber4;static boolean Dealergg = false; static boolean bettingOver = false; static boolean stop = false;
     static boolean aceChoice = false; static List<Integer> warUserOne = new ArrayList<>();;static boolean redoInt = false;static ArrayList<Integer> warComputer = new ArrayList<>();;static List<Integer> TotalWarHands = new ArrayList<>();
     static int warValue; static int totalamount = 0; static int betAmount = 0;static String filePath = "BetLogins.txt";static String greenColor = "\u001B[32m";static String resetColor = "\u001B[0m";
-    static boolean dealerCard = false;
+    static boolean dealerCard = false; static boolean GotFirstNum = false;public static HashSet<Integer> CardNumHolder = new HashSet<>(); static boolean DealerAce = false;static boolean initialized = false;
+    static int[] userChips = new int[5];static String redText = "\u001B[31m";static String blueText = "\u001B[34m"; static String whiteText = "\u001B[37m";static int[] botOneChips = new int[5];static int[] botTwoChips = new int[5];
+    static int UserPokerHandOne = 0;static int UserPokerHandTwo = 0; static int BotOnePokerHand1 =0; static int BotOnePokerHand2 =0;static int BotTwoPokerHand1 =0; static int BotTwoPokerHand2 =0;
 
     public static void main() throws IOException {
         System.out.println("Welcome to the Clam Betting Arena\nThis will have things continually being added\n");
@@ -97,15 +96,19 @@ public class BetSystem {
                 System.out.print("> ");
                 int betSelect = Integer.parseInt(scanner.nextLine());
                 if (betSelect == 1) {
+                    CardNumHolder.clear();
                     BlackJack();
                 }
                 if (betSelect == 2){
+                    CardNumHolder.clear();
                     numberGuesser();
                 }
                 if (betSelect == 3){
+                    CardNumHolder.clear();
                     playWar();
                 }
                 if (betSelect == 4){
+                    CardNumHolder.clear();
                     playPoker();
                 }
                 if (betSelect == 5){
@@ -127,11 +130,9 @@ public class BetSystem {
             numValue = "Ace";
             faceValue = "Heart";
             BJValue = 1;
-            if(!dealerCard){
+            if(!dealerCard) {
                 aceChoice = true;
             }
-
-
         }
         if (num >= 2 && num <= 10) {
             numValue = String.valueOf(num);
@@ -160,7 +161,9 @@ public class BetSystem {
                 numValue = "Ace";
                 faceValue = "Diamonds";
                 BJValue = 1;
-                aceChoice = true;
+                if(!dealerCard){
+                    aceChoice = true;
+                }
             }
             if (num >= 2 && num <= 10) {
                 numValue = String.valueOf(num);
@@ -190,7 +193,10 @@ public class BetSystem {
                 numValue = "Ace";
                 faceValue = "Spades";
                 BJValue = 1;
-                aceChoice = true;
+                if(!dealerCard) {
+                    aceChoice = true;
+                }
+
             }
             if (num >= 2 && num <= 10) {
                 numValue = String.valueOf(num);
@@ -220,7 +226,9 @@ public class BetSystem {
                 numValue = "Ace";
                 faceValue = "Clubs";
                 BJValue = 1;
-                aceChoice = true;
+                if(!dealerCard) {
+                    aceChoice = true;
+                }
             }
             if (num >= 2 && num <= 10) {
                 numValue = String.valueOf(num);
@@ -246,6 +254,23 @@ public class BetSystem {
 
 
     }
+    public static int GetUniqueNum(){
+        Random random = new Random();
+        int randomNumber;
+        if(!GotFirstNum){
+            randomNumber = random.nextInt(52)+1;
+            CardNumHolder.add(randomNumber);
+            GotFirstNum = true;
+        }else{
+            do {
+                randomNumber = random.nextInt(52)+1;
+            } while (CardNumHolder.contains(randomNumber));
+            CardNumHolder.add(randomNumber);
+        }
+        return randomNumber;
+    }
+
+
     public static void NewTotal(String targetString, int NewUserBal) {
 
         String newContent = String.valueOf(NewUserBal);
@@ -272,20 +297,46 @@ public class BetSystem {
 
         }
     }
-    public static void WarCardCheck(int numCheck){
-        redoInt = false;
-        for (Integer totalWarHand : TotalWarHands) {
-            if (totalWarHand == numCheck) {
-                redoInt = true;
-                break;
-            }
+    public static void PrintPokerAmount(int decider){
+        if(decider == 1){
+            System.out.println("USER");
+            System.out.println(greenColor+"Green Chips (Worth $500) -> "+userChips[3]+resetColor);
+            System.out.println(redText+"Red Chips (Worth $100) -> "+userChips[2]+resetColor);
+            System.out.println(blueText+"Blue Chips (Worth $50) -> "+userChips[1]+resetColor);
+            System.out.println(whiteText+"White Chips (Worth $10) -> "+userChips[0]+resetColor);
         }
+        if(decider == 2){
+            System.out.println(  "COMPUTER ONE---------------------COMPUTER TWO");
+            System.out.println(greenColor+"Green Chips -> "+botOneChips[3]+"\tGreen Chips -> "+botOneChips[3]+resetColor);
+            System.out.println(redText+"Red Chips -> "+botOneChips[2]+"\tRed Chips -> "+botOneChips[2]+resetColor);
+            System.out.println(blueText+"Blue Chips -> "+botOneChips[1]+"\tBlue Chips -> "+botOneChips[1]+resetColor);
+            System.out.println(whiteText+"White Chips -> "+botOneChips[0]+"\tWhite Chips -> "+botOneChips[0]+resetColor);
+        }
+        if(decider == 3){
+            System.out.println("USER");
+            System.out.println(greenColor+"Green Chips (Worth $500) -> "+userChips[3]+resetColor);
+            System.out.println(redText+"Red Chips (Worth $100) -> "+userChips[2]+resetColor);
+            System.out.println(blueText+"Blue Chips (Worth $50) -> "+userChips[1]+resetColor);
+            System.out.println(whiteText+"White Chips (Worth $10) -> "+userChips[0]+resetColor);
+            System.out.println("\nCOMPUTER ONE---------------------COMPUTER TWO");
+            System.out.println(greenColor+"Green Chips -> "+botOneChips[3]+"\tGreen Chips -> "+botOneChips[3]+resetColor);
+            System.out.println(redText+"Red Chips -> "+botOneChips[2]+"\tRed Chips -> "+botOneChips[2]+resetColor);
+            System.out.println(blueText+"Blue Chips -> "+botOneChips[1]+"\tBlue Chips -> "+botOneChips[1]+resetColor);
+            System.out.println(whiteText+"White Chips -> "+botOneChips[0]+"\tWhite Chips -> "+botOneChips[0]+resetColor);
+        }
+
+
     }
-    public static void PrintPokerAmount(int betAmount){
-        int BlackChips = 5;
-        int RedChips = 0;
-        int BlueChips = 0;
-        int WhiteChips = 0;
+    public static void BotChipSetup(){
+        int temptemp = (betAmount / 1000)+1;
+        int GreenChips = temptemp;         //500  3
+        int RedChips = 3 * temptemp;       //100  2
+        int BlueChips = 3 * temptemp;      //50   1
+        int WhiteChips = 5 * temptemp;     //10   0
+        botOneChips[0] = WhiteChips;botOneChips[1] = BlueChips;botOneChips[2] = RedChips;botOneChips[3] = GreenChips;
+        botTwoChips[0] = WhiteChips;botTwoChips[1] = BlueChips;botTwoChips[2] = RedChips;botTwoChips[3] = GreenChips;
+        botOneChips[4] = (WhiteChips*10)+(BlueChips*50)+(RedChips*100)+(GreenChips*500);
+        botTwoChips[4] = (WhiteChips*10)+(BlueChips*50)+(RedChips*100)+(GreenChips*500);
 
     }
 
@@ -317,7 +368,7 @@ public class BetSystem {
         } catch (InterruptedException ignored) {}
 
 
-        randomNumber = random.nextInt(52) + 1;
+        randomNumber = GetUniqueNum();
         userHands[0] = (randomNumber);
         NumToCard(randomNumber);
         System.out.println("User card 1: "+ greenColor + numValue + " of " + faceValue + resetColor);
@@ -327,9 +378,7 @@ public class BetSystem {
         } catch (InterruptedException ignored) {}
 
 
-        do{
-            randomNumber2 = random.nextInt(52) + 1;
-        } while (randomNumber2 == randomNumber);
+        randomNumber2 = GetUniqueNum();
         userHands[1] = (randomNumber2);
         NumToCard(randomNumber2);
         System.out.println("User card 2: " + greenColor + numValue + " of " + faceValue + resetColor+"\n");
@@ -339,9 +388,8 @@ public class BetSystem {
         } catch (InterruptedException ignored) {}
 
 
-        do{
-            randomNumber3 = random.nextInt(52) + 1;
-        }while ((randomNumber3 == randomNumber2)||(randomNumber3 == randomNumber));
+
+        randomNumber3 = GetUniqueNum();
         dealerHands[0] = (randomNumber3);
         dealerCard = true;
         NumToCard(randomNumber3);
@@ -355,22 +403,14 @@ public class BetSystem {
         boolean BJend = false;
         while (!BJend){
             System.out.println("What would you like to do?");
-            if (aceChoice){
-                System.out.println("Would you like you ace to count as a 1 or an 11");
-                System.out.print("> ");
-                int aceInput = Integer.parseInt(scanner.nextLine());
-                if(aceInput == 11){
-                    userTotal = (userTotal+10);
-                }
-            }
+
             System.out.println("1 - Hit\n2 - Stay\n3 - Double Down");
             System.out.print("> ");
             int BJdec = Integer.parseInt(scanner.nextLine());
             if (BJdec == 1){
                 int randomNumber4;
-                do{
-                    randomNumber4 = random.nextInt(52) + 1;
-                } while (randomNumber4 == randomNumber3 || randomNumber4 == randomNumber2 || randomNumber4 == randomNumber);
+
+                randomNumber4 = GetUniqueNum();
                 userHands[2] = (randomNumber4);
                 NumToCard(randomNumber4);
                 UserTotalBJV = UserTotalBJV + BJValue;
@@ -393,14 +433,20 @@ public class BetSystem {
 
             }
             if (BJdec == 2){
+                if (aceChoice){
+                    System.out.println("Would you like your ace to count as a 1 or an 11");
+                    System.out.print("> ");
+                    int aceInput = Integer.parseInt(scanner.nextLine());
+                    if(aceInput == 11){
+                        userTotal = (userTotal+10);
+                    }
+                }
                 int DealerCardNum = 0;
                 BJend = true;
                 int counter = 1;
                 while(DealerTotalBJV <= 17){
                     counter++;
-                    do{
-                        randomNumber4 = random.nextInt(52) + 1;
-                    }while ((randomNumber4 == randomNumber3)||(randomNumber4 == randomNumber2)||randomNumber4 == randomNumber);
+                    randomNumber4 = GetUniqueNum();
                     dealerHands[1] = (randomNumber4);
                     dealerCard = true;
                     NumToCard(randomNumber4);
@@ -471,7 +517,7 @@ public class BetSystem {
         int guesserBet = Integer.parseInt(scanner.nextLine());
         System.out.print("Enter in range of number: From 0 to ");
         int guesserRange = Integer.parseInt(scanner.nextLine());
-        System.out.print("Wager odds -> 1:"+(guesserRange+1)+"\n");
+        System.out.print("Wager odds -> 1:"+(guesserRange)+"\n");
         Random random = new Random();
         int grandomNumber = random.nextInt(guesserRange+1);
         System.out.print("Enter in your guess: ");
@@ -486,6 +532,7 @@ public class BetSystem {
         if(!stop){
             if (grandomNumber == guesserInput){
                 System.out.println("Good shit");
+                System.out.println(grandomNumber+" was the number");
                 int guesserTemp = guesserBet * (guesserRange+1);
                 userTotal = userTotal + guesserTemp;
                 NewTotal(userFind,userTotal);
@@ -494,6 +541,7 @@ public class BetSystem {
 
             }else{
                 System.out.println("L\nBet lost");
+                System.out.println(grandomNumber+" was the number");
                 userTotal = userTotal - guesserBet;
                 NewTotal(userFind,userTotal);
                 System.out.println("New user total: "+ greenColor + userTotal + resetColor);
@@ -516,19 +564,13 @@ public class BetSystem {
         int warRandom1 = -1;
 
         for(int i = 1;i<26;i++){
-            do{
-                warRandom1 = (random.nextInt(52))+1;
-                WarCardCheck(warRandom1);
-            }while(redoInt);
+            warRandom1 = GetUniqueNum();
             warUserOne.add(warRandom1);
             TotalWarHands.add(warRandom1);
         }
 
         for(int i = 1;i<26;i++){
-            do{
-                warRandom1 = (random.nextInt(52))+1;
-                WarCardCheck(warRandom1);
-            }while(redoInt);
+            warRandom1 = GetUniqueNum();
             warComputer.add(warRandom1);
             TotalWarHands.add(warRandom1);
         }
@@ -542,7 +584,7 @@ public class BetSystem {
 
             boolean warOver = false;
 
-            while(warOver == false){
+            while(!warOver){
                 int warHandPrint = warUserOne.get(i);
                 NumToCard(warHandPrint);
                 int warUserValue = warValue;
@@ -560,7 +602,6 @@ public class BetSystem {
 
                 if(warUserValue > warCompValue){
                     System.out.println("You have Won this round!\nCard added to inventory");
-                    int temptemp = i+26;
                     warUserOne.add(warComputer.get(i));
                     warComputer.remove(i);
                     System.out.println("Getting cards for next round.......\n");
@@ -571,7 +612,7 @@ public class BetSystem {
                 }
                 if(warUserValue < warCompValue){
                     System.out.println("You have Lost this round\nCard removed from inventory");
-                    int temptemp = i+26;
+
                     warComputer.add(warUserOne.get(i));
                     warUserOne.remove(i);
                     System.out.println("Getting cards for next round.......\n");
@@ -630,7 +671,7 @@ public class BetSystem {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to Poker");
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
         } catch (InterruptedException ignored) {}
         do{
             System.out.println("Enter bet amount, must be in 1000's:");
@@ -638,7 +679,70 @@ public class BetSystem {
             betAmount = Integer.parseInt(scanner.nextLine());
         }while(betAmount % 1000 != 0);
 
-        PrintPokerAmount(betAmount);
+        if(betAmount>userTotal){
+            System.out.println("you minga dinga. dont got the funds");
+            System.exit(0);
+        }
+
+
+        int temptemp = betAmount / 1000;
+        int GreenChips = temptemp;         //500  3
+        int RedChips = 3 * temptemp;       //100  2
+        int BlueChips = 3 * temptemp;      //50   1
+        int WhiteChips = 5 * temptemp;     //10   0
+        userChips[0] = WhiteChips;
+        userChips[1] = BlueChips;
+        userChips[2] = RedChips;
+        userChips[3] = GreenChips;
+        userChips[4] = (WhiteChips*10)+(BlueChips*50)+(RedChips*100)+(GreenChips*500);
+
+        System.out.println("Here are your current chips..........\n");
+        PrintPokerAmount(1);
+
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException ignored) {}
+
+        System.out.println("here are the Computer player's chips");
+        PrintPokerAmount(2);
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException ignored) {}
+        System.out.println("Dealing.......");
+
+        UserPokerHandOne = GetUniqueNum();
+        NumToCard(UserPokerHandOne);
+        System.out.println("User card one: "+numValue+" of "+faceValue);
+
+        BotOnePokerHand1 = GetUniqueNum();
+        NumToCard(BotOnePokerHand1);
+        System.out.println("Computer 1 card one: "+numValue+" of "+faceValue);
+
+        BotTwoPokerHand1 = GetUniqueNum();
+        NumToCard(BotTwoPokerHand1);
+        System.out.println("Computer 2 card one: "+numValue+" of "+faceValue+"\n");
+
+        UserPokerHandTwo = GetUniqueNum();
+        NumToCard(UserPokerHandTwo);
+        System.out.println("User card two: "+numValue+" of "+faceValue);
+
+        BotOnePokerHand2 = GetUniqueNum();
+        NumToCard(BotOnePokerHand2);
+        System.out.println("Computer 1 card two: "+numValue+" of "+faceValue);
+
+        BotTwoPokerHand2 = GetUniqueNum();
+        NumToCard(BotTwoPokerHand2);
+        System.out.println("Computer 2 card two: "+numValue+" of "+faceValue+"\n");
+
+        BotChipSetup();
+
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException ignored) {}
+
+        System.out.println("starting the first round of betting........\nAnte Up!");
+
 
     }
 

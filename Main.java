@@ -2,10 +2,10 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
         System.out.println("Hello you fucking shminga binga");
-        System.out.println("today I will be guiding you on the resources you need adn to specific calculations");
+        System.out.println("this is a collection of the various different projects i'm working on");
         System.out.println("This List will be forever increasing, as you will see by the menu options");
         System.out.println("This was created on 10/16");
         System.out.println("\n");
@@ -20,13 +20,13 @@ public class Main {
         System.out.println("Welcome "+userName);
         System.out.print("Enter in your location (2-letter state abbreviation): ");
         String userLoc = scanner.nextLine();
+        System.out.println("Location: "+userLoc);
         System.out.println("\n");
         System.out.println("what would you like to do today?");
-        System.out.println("So far these are complete: 1, 2, 3, 5, 6, 7");
         while (bigshmiga) {
             System.out.println("\n1 - Currency Converter\n2 - Tax Calculator\n3 - Tic Tac Toe game");
             System.out.println("4 - Snake game\n5 - Encryption center\n6 - ATM Simulation\n7 - Document Analyzer");
-            System.out.println("8 - Bet against the Computer\n9 - Exit");
+            System.out.println("8 - Bet against the Computer\n9 - Trivia\n10- Exit");
             System.out.print("Selection > ");
 
             String SelTemp = scanner.nextLine();
@@ -64,6 +64,9 @@ public class Main {
                 BetSystem.main();
             }
             if (userSel == 9){
+                Trivia.main();
+            }
+            if (userSel == 10){
                 System.out.println("Thank you for using my program!");
                 System.out.println("Closing................");
                 bigshmiga = false;

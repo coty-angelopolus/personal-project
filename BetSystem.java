@@ -8,7 +8,8 @@ public class BetSystem {
     static int warValue; static int totalamount = 0; static int betAmount = 0;static String filePath = "BetLogins.txt";static String greenColor = "\u001B[32m";static String resetColor = "\u001B[0m";
     static boolean dealerCard = false; static boolean GotFirstNum = false;public static HashSet<Integer> CardNumHolder = new HashSet<>(); static boolean DealerAce = false;static boolean initialized = false;
     static int[] userChips = new int[5];static String redText = "\u001B[31m";static String blueText = "\u001B[34m"; static String whiteText = "\u001B[37m";static int[] botOneChips = new int[5];static int[] botTwoChips = new int[5];
-    static int UserPokerHandOne = 0;static int UserPokerHandTwo = 0; static int BotOnePokerHand1 =0; static int BotOnePokerHand2 =0;static int BotTwoPokerHand1 =0; static int BotTwoPokerHand2 =0;
+    static int UserPokerHandOne = 0;static int UserPokerHandTwo = 0; static int BotOnePokerHand1 =0; static int BotOnePokerHand2 =0;static int BotTwoPokerHand1 =0; static int BotTwoPokerHand2 =0; static int pokerPotTotal = 0;
+    static int[] PokerRiver = new int[4];
 
     public static void main() throws IOException {
         System.out.println("Welcome to the Clam Betting Arena\nThis will have things continually being added\n");
@@ -36,6 +37,7 @@ public class BetSystem {
             writer.write(userTotal);
             writer.newLine();
             writer.close();
+            System.exit(0);
         }
         if (BetSel == 2) {
             System.out.print("Enter username: ");
@@ -340,6 +342,188 @@ public class BetSystem {
 
     }
 
+    public static void PlayersBetAmount(int id, int betAmount){
+        int temptemp1 = 0;
+        int tempGreenChips = 0;
+        if (betAmount / 500 >= 1) {
+            tempGreenChips = betAmount / 500;
+            temptemp1 = betAmount % 500;
+            if(id == 1){
+                userChips[3] = userChips[3]-tempGreenChips;
+            }
+            if(id == 2){
+               botOneChips[3] = botOneChips[3]-tempGreenChips;
+            }
+            if(id == 3){
+                botTwoChips[3] = botTwoChips[3]-tempGreenChips;
+            }
+            if(id == 4){
+                userChips[3] = userChips[3]-tempGreenChips;
+                botOneChips[3] = botOneChips[3]-tempGreenChips;
+                botTwoChips[3] = botTwoChips[3]-tempGreenChips;
+            }
+        } else {
+            temptemp1 = betAmount;
+        }
+        int temptemp2 = 0;
+        int tempRedChips = 0;
+        if (temptemp1 / 100 >= 1) {
+            tempRedChips = temptemp1 / 100;
+            temptemp2 = temptemp1 % 100;
+            if(id == 1){
+                userChips[2] = userChips[2]-tempRedChips;
+            }
+            if(id == 2){
+                botOneChips[2] = botOneChips[2]-tempRedChips;
+            }
+            if(id == 3){
+                botTwoChips[2] = botTwoChips[2]-tempRedChips;
+            }
+            if(id == 4){
+                userChips[2] = userChips[2]-tempRedChips;
+                botOneChips[2] = botOneChips[2]-tempRedChips;
+                botTwoChips[2] = botTwoChips[2]-tempRedChips;
+            }
+        } else {
+            temptemp2 = temptemp1;
+        }
+        int temptemp3 = 0;
+        int tempBlueChips = 0;
+        if (temptemp2 / 50 >= 1) {
+            tempBlueChips = temptemp2 / 50;
+            temptemp3 = temptemp2 % 50;
+            if(id == 1){
+                userChips[1] = userChips[1]-tempBlueChips;
+            }
+            if(id == 2){
+                botOneChips[1] = botOneChips[1]-tempBlueChips;
+            }
+            if(id == 3){
+                botTwoChips[1] = botTwoChips[1]-tempBlueChips;
+            }
+            if(id == 4){
+                userChips[1] = userChips[1]-tempBlueChips;
+                botOneChips[1] = botOneChips[1]-tempBlueChips;
+                botTwoChips[1] = botTwoChips[1]-tempBlueChips;
+            }
+        }else{
+            temptemp3 = temptemp2;
+        }
+        int tempWhiteChips = 0;
+        if (temptemp3 / 10 >= 1) {
+            tempWhiteChips = temptemp3 / 10;
+            if(id == 1){
+                userChips[0] = userChips[0]-tempWhiteChips;
+            }
+            if(id == 2){
+                botOneChips[0] = botOneChips[0]-tempWhiteChips;
+            }
+            if(id == 3){
+                botTwoChips[0] = botTwoChips[0]-tempWhiteChips;
+            }
+            if(id == 4){
+                userChips[0] = userChips[0]-tempWhiteChips;
+                botOneChips[0] = botOneChips[0]-tempWhiteChips;
+                botTwoChips[0] = botTwoChips[0]-tempWhiteChips;
+            }
+        }
+        if(id == 1) {
+            System.out.println("Player has bet: ");
+            if(tempGreenChips!=0){
+                System.out.println("Green chips -> " + tempGreenChips);
+            }
+            if(tempRedChips!=0) {
+                System.out.println("Red chips -> " + tempRedChips);
+            }
+            if(tempBlueChips!=0){
+                System.out.println("Blue chips -> " + tempBlueChips);
+            }
+            if(tempWhiteChips!=0){
+                System.out.println("White chips -> " + tempWhiteChips);
+            }
+            pokerPotTotal = pokerPotTotal + (tempGreenChips*500) + (tempRedChips*100) + (tempBlueChips*50) + (tempWhiteChips*10);
+
+        }
+        if(id == 2){
+            System.out.println("\nComputer 1 has bet: ");
+            if(tempGreenChips!=0){
+                System.out.println("Green chips -> " + tempGreenChips);
+            }
+            if(tempRedChips!=0) {
+                System.out.println("Red chips -> " + tempRedChips);
+            }
+            if(tempBlueChips!=0){
+                System.out.println("Blue chips -> " + tempBlueChips);
+            }
+            if(tempWhiteChips!=0){
+                System.out.println("White chips -> " + tempWhiteChips);
+            }
+            pokerPotTotal = pokerPotTotal + (tempGreenChips*500) + (tempRedChips*100) + (tempBlueChips*50) + (tempWhiteChips*10);
+            System.out.println("Pot total: "+pokerPotTotal);
+        }
+        if(id == 3){
+            System.out.println("\nComputer 2 has bet: ");
+            if(tempGreenChips!=0){
+                System.out.println("Green chips -> " + tempGreenChips);
+            }
+            if(tempRedChips!=0) {
+                System.out.println("Red chips -> " + tempRedChips);
+            }
+            if(tempBlueChips!=0){
+                System.out.println("Blue chips -> " + tempBlueChips);
+            }
+            if(tempWhiteChips!=0){
+                System.out.println("White chips -> " + tempWhiteChips);
+            }
+            pokerPotTotal = pokerPotTotal + (tempGreenChips*500) + (tempRedChips*100) + (tempBlueChips*50) + (tempWhiteChips*10);
+            System.out.println("Pot total: "+pokerPotTotal);
+        }
+        if(id == 4){
+            System.out.println("Player has bet: ");
+            if(tempGreenChips!=0){
+                System.out.println("Green chips -> " + tempGreenChips);
+            }
+            if(tempRedChips!=0) {
+                System.out.println("Red chips -> " + tempRedChips);
+            }
+            if(tempBlueChips!=0){
+                System.out.println("Blue chips -> " + tempBlueChips);
+            }
+            if(tempWhiteChips!=0){
+                System.out.println("White chips -> " + tempWhiteChips);
+            }
+            System.out.println("\nComputer 1 has bet: ");
+            if(tempGreenChips!=0){
+                System.out.println("Green chips -> " + tempGreenChips);
+            }
+            if(tempRedChips!=0) {
+                System.out.println("Red chips -> " + tempRedChips);
+            }
+            if(tempBlueChips!=0){
+                System.out.println("Blue chips -> " + tempBlueChips);
+            }
+            if(tempWhiteChips!=0){
+                System.out.println("White chips -> " + tempWhiteChips);
+            }
+            System.out.println("\nComputer 2 has bet: ");
+            if(tempGreenChips!=0){
+                System.out.println("Green chips -> " + tempGreenChips);
+            }
+            if(tempRedChips!=0) {
+                System.out.println("Red chips -> " + tempRedChips);
+            }
+            if(tempBlueChips!=0){
+                System.out.println("Blue chips -> " + tempBlueChips);
+            }
+            if(tempWhiteChips!=0){
+                System.out.println("White chips -> " + tempWhiteChips);
+            }
+            pokerPotTotal = pokerPotTotal + (tempGreenChips*1500) + (tempRedChips*300) + (tempBlueChips*150) + (tempWhiteChips*30);
+            System.out.println("Pot total: "+pokerPotTotal);
+        }
+
+
+    }
 
     public static void BlackJack(){
         Scanner scanner = new Scanner(System.in);
@@ -713,27 +897,20 @@ public class BetSystem {
 
         UserPokerHandOne = GetUniqueNum();
         NumToCard(UserPokerHandOne);
-        System.out.println("User card one: "+numValue+" of "+faceValue);
+        System.out.println(greenColor +"User card one: "+resetColor+numValue+" of "+faceValue);
 
         BotOnePokerHand1 = GetUniqueNum();
-        NumToCard(BotOnePokerHand1);
-        System.out.println("Computer 1 card one: "+numValue+" of "+faceValue);
 
         BotTwoPokerHand1 = GetUniqueNum();
-        NumToCard(BotTwoPokerHand1);
-        System.out.println("Computer 2 card one: "+numValue+" of "+faceValue+"\n");
 
         UserPokerHandTwo = GetUniqueNum();
         NumToCard(UserPokerHandTwo);
-        System.out.println("User card two: "+numValue+" of "+faceValue);
+        System.out.println(greenColor+"User card two: "+resetColor+numValue+" of "+faceValue);
 
         BotOnePokerHand2 = GetUniqueNum();
-        NumToCard(BotOnePokerHand2);
-        System.out.println("Computer 1 card two: "+numValue+" of "+faceValue);
 
         BotTwoPokerHand2 = GetUniqueNum();
-        NumToCard(BotTwoPokerHand2);
-        System.out.println("Computer 2 card two: "+numValue+" of "+faceValue+"\n");
+        System.out.println("Cards to all players have been dealt...............");
 
         BotChipSetup();
 
@@ -742,6 +919,55 @@ public class BetSystem {
         } catch (InterruptedException ignored) {}
 
         System.out.println("starting the first round of betting........\nAnte Up!");
+        PlayersBetAmount(4,10);
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ignored) {}
+
+        System.out.println("Creating river");
+        PokerRiver[0] = GetUniqueNum();
+        NumToCard(PokerRiver[0]);
+        System.out.println("River card one: "+numValue+" of "+faceValue);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ignored) {}
+
+        PokerRiver[1] = GetUniqueNum();
+        NumToCard(PokerRiver[1]);
+        System.out.println("River card two: "+numValue+" of "+faceValue);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ignored) {}
+
+        PokerRiver[2] = GetUniqueNum();
+        NumToCard(PokerRiver[2]);
+        System.out.println("River card three: "+numValue+" of "+faceValue);
+        PrintPokerAmount(1);
+
+        Scanner newScanner = new Scanner(System.in);
+        System.out.println("Round one betting.........");
+        System.out.println("How many chips would you like to bet?");
+        System.out.print("Green chips -> ");
+        int PokerUserChips = 500*(Integer.parseInt(newScanner.nextLine()));
+        System.out.print("\nRed chips -> ");
+        PokerUserChips =PokerUserChips+ 100*(Integer.parseInt(newScanner.nextLine()));
+        System.out.print("\nBlue chips -> ");
+        PokerUserChips = PokerUserChips+ 50*(Integer.parseInt(newScanner.nextLine()));
+        System.out.println("\nWhite chips -> ");
+        PokerUserChips= PokerUserChips+ 10*(Integer.parseInt(newScanner.nextLine()));
+        pokerPotTotal = pokerPotTotal + PokerUserChips;
+
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException ignored) {}
+
+        System.out.println("Computer one betting.......");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ignored) {}
+        
+
 
 
     }
